@@ -16,7 +16,7 @@ import sys
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-sys.path.insert(0, os.path.join(BASE_DIR, 'ex'))
+sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # extra_app
     'xadmin',
     'crispy_forms',
+    'captcha',
 
     # my_app
     'users',
@@ -155,3 +156,11 @@ TEMPLATES = [
         },
     },
 ]
+
+EMAIL_HOST = "smtp.163.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "wang_wyj1996@163.com"
+EMAIL_HOST_PASSWORD = "wyj1301954425"
+EMAIL_USE_TLS=True
+EMAIL_FROM = "wang_wyj1996@163.com"
+
