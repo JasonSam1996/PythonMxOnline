@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'xadmin',
     'crispy_forms',
     'captcha',
+    'pure_pagination',
 
     # my_app
     'users',
@@ -138,12 +139,11 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        #os.path.join(BASE_DIR, 'templates')没了这句，
+        # os.path.join(BASE_DIR, 'templates')没了这句，
         # 会显示django.template.exceptions.TemplateDoesNotExist: index.html
         'APP_DIRS': True,
         'OPTIONS': {
@@ -152,6 +152,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -161,6 +162,8 @@ EMAIL_HOST = "smtp.163.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = "wang_wyj1996@163.com"
 EMAIL_HOST_PASSWORD = "wyj1301954425"
-EMAIL_USE_TLS=True
+EMAIL_USE_TLS = True
 EMAIL_FROM = "wang_wyj1996@163.com"
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
