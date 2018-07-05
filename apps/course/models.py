@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import datetime
 
+from organization.models import CourseOrg
+
 
 # Create your models here.
 class Course(models.Model):
@@ -9,6 +11,7 @@ class Course(models.Model):
         (u'intermediate', u'中级'),
         (u'expert', u'高级'),
     )
+    course_org = models.ForeignKey(CourseOrg, verbose_name=u'课程机构', null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name=u'课程名称')
     desc = models.CharField(max_length=200, verbose_name=u'课程描述')
     detail = models.TextField(verbose_name=u'课程详情')
@@ -23,6 +26,9 @@ class Course(models.Model):
     class Meta:
         verbose_name = u'课程信息'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
 
 
 class Lesson(models.Model):

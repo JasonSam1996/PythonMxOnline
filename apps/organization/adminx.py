@@ -15,11 +15,11 @@ class CourseOrgAdmin(object):
 
 
 class TeacherAdmin(object):
-    list_display = ['org', 'name', 'work_year', 'work_company', 'work_position', 'points', 'chick_nums', 'fav_nums',
-                    'add_time']
-    search_fields = ['org', 'name', 'work_year', 'work_company', 'work_position', 'points', 'chick_nums', 'fav_nums']
-    list_filter = ['org', 'name', 'work_year', 'work_company', 'work_position', 'points', 'chick_nums', 'fav_nums',
-                   'add_time']
+    list_display = ['name', 'work_year', 'work_company', 'work_position', 'points', 'chick_nums', 'fav_nums',
+                    'org', 'add_time']
+    search_fields = ['name', 'work_year', 'work_company', 'work_position', 'points', 'chick_nums', 'fav_nums', 'org']
+    list_filter = ['name', 'work_year', 'work_company', 'work_position', 'points', 'chick_nums', 'fav_nums',
+                   'org', 'add_time']
 
 
 xadmin.site.register(CityDict, CityDictAdmin)
