@@ -12,15 +12,21 @@ class CourseAdmin(object):
 
 
 class LessonAdmin(object):
-    pass
+    list_display = ['name', 'course', 'add_time']
+    search_fields = ['name', 'course']
+    list_filter = ['name', 'course', 'add_time']
 
 
 class VideoAdmin(object):
-    pass
+    list_display = ['name', 'lesson', 'add_time']
+    search_fields = ['name', 'lesson']
+    list_filter = ['name', 'lesson', 'add_time']
 
 
 class CourseResAdmin(object):
-    pass
+    list_display = ['name', 'course', 'download', 'add_time']
+    search_fields = ['name', 'course', 'download']
+    list_filter = ['name', 'course', 'download', 'add_time']
 
 
 xadmin.site.register(Course, CourseAdmin)

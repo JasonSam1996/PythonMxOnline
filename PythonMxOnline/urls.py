@@ -17,7 +17,6 @@ import xadmin
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
 from users.views import LoginView, RegisterView, ActiveCodeView, ForgetPwdView, ResetView, ModifyPwdView
-from organization.views import OrgListView
 from django.views.static import serve
 from PythonMxOnline.settings import MEDIA_ROOT
 
@@ -32,7 +31,10 @@ urlpatterns = [
     url(r'^reset/(?P<active_code>.*)/$', ResetView.as_view(), name='reset_pwd'),
     url(r'^modify/$', ModifyPwdView.as_view(), name='modify_pwd'),
 
+    # 课程机构列表
     url(r'^org/', include('organization.urls',namespace='org')),
+    # 课程列表
+    url(r'^course/', include('course.urls',namespace='course')),
 
     # 上传文件路径
     url(r'^media/(?P<path>.*)/$', serve, {"document_root": MEDIA_ROOT}),
