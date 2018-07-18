@@ -23,15 +23,21 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return self.username
 
+    def get_unread_nums(self):
+        # 获取用户未读消息数量
+        from operation.models import UserMessage
+        return UserMessage.objects.filter(user=self.id).count()
+
 
 class EmailCode(models.Model):
     SENDTYPE = (
         (u'register', u'注册'),
         (u'forget', u'找回密码'),
+        (u'update_email', u'修改邮箱'),
     )
     code = models.CharField(max_length=50, verbose_name=u'验证码')
     email = models.CharField(max_length=50, verbose_name=u'邮箱')
-    send_type = models.CharField(choices=SENDTYPE, verbose_name=u'验证类型', max_length=10)
+    send_type = models.CharField(choices=SENDTYPE, verbose_name=u'验证类型', max_length=15)
     send_time = models.DateTimeField(default=datetime.now, verbose_name=u'发送时间')
 
     class Meta:

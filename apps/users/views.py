@@ -6,7 +6,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-
+from operation.models import UserMessage
 from .forms import LoginForm, RegisterForm, ForgetPwdForm, ModifyPwdForm
 from .models import UserProfile, EmailCode
 from utils.email_send import send_email
@@ -72,6 +72,12 @@ class RegisterView(View):
             user_profile.is_active = False
             user_profile.password = make_password(pass_word)
             user_profile.save()
+
+            # 写入欢迎注册消息
+            user_message = UserMessage()
+            user_message.user = user_profile.id
+            user_message.message = "欢迎注册"
+            user_message.save()
 
             # 发送到用户邮箱并且叫用户激活
             send_email(user_name, "register")
