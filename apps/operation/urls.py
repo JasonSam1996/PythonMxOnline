@@ -31,5 +31,5 @@ urlpatterns = [
     url(r'^my_fav/course/$', MyFavCourseView.as_view(), name='my_fav_course'),
 
     # 用户消息
-    url(r'^my_message$', MyMessageView.as_view(), name='my_message$'),
+    url(r'^my_message$', MyMessageView.as_view(), name='my_message'),
 ]

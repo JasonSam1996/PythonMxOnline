@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.views.generic.base import View
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponseRedirect
@@ -8,8 +8,10 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from operation.models import UserMessage
 from .forms import LoginForm, RegisterForm, ForgetPwdForm, ModifyPwdForm
-from .models import UserProfile, EmailCode
+from .models import UserProfile, EmailCode, Banner
 from utils.email_send import send_email
+from course.models import Course
+from organization.models import CourseOrg
 
 
 # Create your views here.
@@ -18,6 +20,7 @@ class CustomBackend(ModelBackend):
     """
     实现邮箱用户名通用登录
     """
+
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             user = UserProfile.objects.get(Q(username=username) | Q(email=username))
@@ -31,6 +34,7 @@ class ActiveCodeView(View):
     """
     获取图片验证码
     """
+
     def get(self, request, active_code):
         # 数据库查询验证码
         all_code = EmailCode.objects.filter(code=active_code)
@@ -50,6 +54,7 @@ class RegisterView(View):
     """
     注册功能
     """
+
     def get(self, request):
         register_form = RegisterForm()
         return render(request, "register.html", {'register_form': register_form})
@@ -90,6 +95,7 @@ class LoginView(View):
     """
     登录功能
     """
+
     def get(self, request):
         return render(request, "login.html", {})
 
@@ -114,10 +120,18 @@ class LoginView(View):
             return render(request, "login.html", {"login_form": login_form})
 
 
+class LogoutView(View):
+    # 登出用户
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse("index"))
+
+
 class ForgetPwdView(View):
     """
     忘记密码功能
     """
+
     def get(self, request):
         forgetpwd_form = ForgetPwdForm()
         return render(request, "forgetpwd.html", {"forgetpwd_form": forgetpwd_form})
@@ -136,6 +150,7 @@ class ResetView(View):
     """
     打开重置密码页面
     """
+
     def get(self, request, active_code):
         # 数据库查询验证码
         all_code = EmailCode.objects.filter(code=active_code)
@@ -153,6 +168,7 @@ class ModifyPwdView(View):
     """
     重置密码
     """
+
     def post(self, request):
         reset_form = ModifyPwdForm(request.POST)
         if reset_form.is_valid():
@@ -169,3 +185,30 @@ class ModifyPwdView(View):
         else:
             email = request.POST.get('email', '')
             return render(request, "password_reset.html", {"email": email, 'reset_form': reset_form})
+
+
+class IndexView(View):
+    # 首页
+    def get(self, request):
+        all_banner = Banner.objects.all().order_by("index")
+        course = Course.objects.filter(is_banner=False)[:6]
+        banner_course = Course.objects.filter(is_banner=True)[:3]
+        all_org = CourseOrg.objects.all()[:15]
+        return render(request, "index.html", {
+            "all_banner": all_banner,
+            "courses": course,
+            "banner_courses": banner_course,
+            "all_org": all_org
+        })
+
+
+def page_not_fount(request):
+    response = render_to_response("404.html", {})
+    response.status_code = 404
+    return response
+
+
+def server_error(request):
+    response = render_to_response("500.html", {})
+    response.status_code = 500
+    return response

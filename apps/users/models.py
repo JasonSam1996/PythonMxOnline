@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import datetime
-
+from django.db.models import Q
 
 # Create your models here.
 class UserProfile(AbstractUser):
@@ -26,7 +26,7 @@ class UserProfile(AbstractUser):
     def get_unread_nums(self):
         # 获取用户未读消息数量
         from operation.models import UserMessage
-        return UserMessage.objects.filter(user=self.id).count()
+        return UserMessage.objects.filter(Q(user=self.id)|Q(user=0),has_read=False).count()
 
 
 class EmailCode(models.Model):

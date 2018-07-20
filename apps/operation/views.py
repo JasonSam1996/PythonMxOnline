@@ -163,7 +163,6 @@ class MyFavCourseView(LoginRequiredMixin, View):
             course_id = fav_course.fav_id
             course = Course.objects.get(id=course_id)
             course_list.append(course)
-        print(course_list)
         return render(request, "usercenter-fav-course.html", {
             "current_page": current_page,
             "course_list": course_list
@@ -174,6 +173,12 @@ class MyMessageView(LoginRequiredMixin, View):
     def get(self, request):
         current_page = "mymessage"
         all_message = UserMessage.objects.filter(Q(user=request.user.id)|Q(user=0))
+
+        # 用户进入个人消息后清空未读消息的记录
+        all_unread_message = UserMessage.objects.filter(Q(user=request.user.id)|Q(user=0),has_read=False)
+        for unread_message in all_unread_message:
+            unread_message.has_read = True
+            unread_message.save()
         # 分页功能
         try:
             page = request.GET.get('page', 1)

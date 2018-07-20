@@ -27,7 +27,9 @@ SECRET_KEY = 'u@wuu@h)wqq5bvx^d18974d$48+9^os(bt$84=0kd#l2u$0f7w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*'
+]
 AUTH_USER_MODEL = "users.UserProfile"
 # Application definition
 
@@ -167,3 +169,4 @@ EMAIL_FROM = "wang_wyj1996@163.com"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')

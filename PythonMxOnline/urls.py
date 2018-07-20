@@ -15,15 +15,15 @@ Including another URLconf
 """
 import xadmin
 from django.conf.urls import url, include
-from django.views.generic import TemplateView
-from users.views import LoginView, RegisterView, ActiveCodeView, ForgetPwdView, ResetView, ModifyPwdView
+from users.views import LoginView, RegisterView, ActiveCodeView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView,IndexView
 from django.views.static import serve
 from PythonMxOnline.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
+    url(r'^$', IndexView.as_view(), name='index'),
     url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^active/(?P<active_code>.*)/$', ActiveCodeView.as_view(), name='user_active'),
@@ -40,4 +40,11 @@ urlpatterns = [
 
     # 上传文件路径
     url(r'^media/(?P<path>.*)/$', serve, {"document_root": MEDIA_ROOT}),
+
+    # 静态文件路径
+    # url(r'^static/(?P<path>.*)/$', serve, {"document_root": STATIC_ROOT }),
 ]
+
+handler404 = 'users.views.page_not_fount'
+
+handler500 = 'users.views.server_error'

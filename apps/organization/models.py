@@ -25,6 +25,7 @@ class CourseOrg(models.Model):
     )
     name = models.CharField(max_length=50, verbose_name=u'机构名称')
     desc = models.TextField(verbose_name=u'机构描述')
+    tag = models.CharField(max_length=10, default="", verbose_name=u'机构类别')
     category = models.CharField(max_length=100, choices=CETAGORY_CHOICES, verbose_name='机构类别', default="REP")
     chick_nums = models.IntegerField(default=0, verbose_name=u'点击数量')
     fav_nums = models.IntegerField(default=0, verbose_name=u'收藏数量')
