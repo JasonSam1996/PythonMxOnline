@@ -1,7 +1,10 @@
-from django.db import models
 from datetime import datetime
 
-from organization.models import CourseOrg,Teacher
+from django.db import models
+
+from DjangoUeditor.models import UEditorField
+
+from organization.models import CourseOrg, Teacher
 
 
 # Create your models here.
@@ -14,9 +17,10 @@ class Course(models.Model):
     course_org = models.ForeignKey(CourseOrg, verbose_name=u'课程机构', null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name=u'课程名称')
     desc = models.CharField(max_length=200, verbose_name=u'课程描述')
-    detail = models.TextField(verbose_name=u'课程详情')
-    is_banner = models.BooleanField(default=False,verbose_name=u'是否轮播')
-    teacher = models.ForeignKey(Teacher,verbose_name=u'讲师',null=True, blank=True)
+    detail = UEditorField(verbose_name=u"课程详情", width=600, height=300, imagePath="course/ueditor/",
+                          filePath="course/ueditor/",default='')
+    is_banner = models.BooleanField(default=False, verbose_name=u'是否轮播')
+    teacher = models.ForeignKey(Teacher, verbose_name=u'讲师', null=True, blank=True)
     degree = models.CharField(choices=DEGREE_CHOICES, default='primary', max_length=15, verbose_name=u'课程难度')
     learn_time = models.IntegerField(default=1, verbose_name=u'学习时长')
     students = models.IntegerField(default=0, verbose_name=u'学习人数')
@@ -25,8 +29,8 @@ class Course(models.Model):
     image = models.FileField(upload_to='course/%Y/%m', max_length=100, verbose_name='封面')
     category = models.CharField(default="后端开发", max_length=20, verbose_name=u'课程类别')
     tag = models.CharField(default="", verbose_name=u'课程标签', max_length=10)
-    course_information = models.CharField(max_length=300,verbose_name=u'课程须知',null=True, blank=True)
-    learn_what = models.CharField(max_length=300,verbose_name=u'学到什么',null=True, blank=True)
+    course_information = models.CharField(max_length=300, verbose_name=u'课程须知', null=True, blank=True)
+    learn_what = models.CharField(max_length=300, verbose_name=u'学到什么', null=True, blank=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     class Meta:
@@ -36,6 +40,8 @@ class Course(models.Model):
     def get_zj_nums(self):
         # 获取课程章节数
         return self.lesson_set.all().count()
+
+    get_zj_nums.short_description = "章节数"
 
     def get_learn_users(self):
         # 获取学习用户
@@ -47,6 +53,13 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class BannerCourse(Course):
+    class Meta:
+        verbose_name = "轮播课程"
+        verbose_name_plural = verbose_name
+        proxy = True  # 这样不会生成表
 
 
 class Lesson(models.Model):

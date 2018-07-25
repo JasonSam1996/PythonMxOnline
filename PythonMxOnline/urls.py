@@ -15,7 +15,8 @@ Including another URLconf
 """
 import xadmin
 from django.conf.urls import url, include
-from users.views import LoginView, RegisterView, ActiveCodeView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView,IndexView
+from users.views import LoginView, RegisterView, ActiveCodeView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView, \
+    IndexView
 from django.views.static import serve
 from PythonMxOnline.settings import MEDIA_ROOT
 
@@ -43,6 +44,9 @@ urlpatterns = [
 
     # 静态文件路径
     # url(r'^static/(?P<path>.*)/$', serve, {"document_root": STATIC_ROOT }),
+
+    # 富文本
+    url(r'^ueditor/', include('DjangoUeditor.urls')),
 ]
 
 handler404 = 'users.views.page_not_fount'
